@@ -27,10 +27,13 @@ app.get('/create-room', (req, res) => {
         gameState: null
     };
     
+    // Local Change Delete this line if you are not using Render
+    const baseUrl = process.env.RENDER_EXTERNAL_URL || `http://${req.get('host')}`;
+    
     res.json({
-        roomId: roomId,
-        player1Link: `http://localhost:3000/game.html?room=${roomId}&player=1`,
-        player2Link: `http://localhost:3000/game.html?room=${roomId}&player=2`
+        roomId: roomId,  // Local Change Delete this line if you are not using Render   
+        player1Link: `${baseUrl}/game.html?room=${roomId}&player=1`,
+        player2Link: `${baseUrl}/game.html?room=${roomId}&player=2`
     });
 });
 
@@ -80,7 +83,8 @@ function generateRoomId() {
     return Math.random().toString(36).substring(2, 8);
 }
 
-const PORT = 3000;
+// Local Change const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 http.listen(PORT, '0.0.0.0', (err) => {
     if (err) {
         console.error('Server failed to start:', err);
