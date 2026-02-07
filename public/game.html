@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="status-bar">
+            <h2>Room: <span id="roomId"></span></h2>
+            <p>You are: <span id="playerId"></span></p>
+            <p id="gameStatus">Waiting for opponent...</p>
+        </div>
+        
+        <div class="game-board">
+            <div class="opponent-area">
+                <h3>Opponent's Hand</h3>
+                <div id="opponentHand" class="card-area"></div>
+            </div>
+            
+            <div class="play-area">
+                <h3>Play Area</h3>
+                <div id="playArea"></div>
+            </div>
+            
+            <div class="player-area">
+                <h3>Your Hand</h3>
+                <div id="playerHand" class="card-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

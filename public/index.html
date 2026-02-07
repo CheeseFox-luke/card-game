@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game - Create Room</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Card Game</h1>
+        <button id="createRoomBtn" class="btn-primary">Create Room</button>
+        
+        <div id="roomLinks" class="hidden">
+            <h2>Room Created!</h2>
+            <p>Share these links with your opponent:</p>
+            
+            <div class="link-box">
+                <h3>Player 1 Link:</h3>
+                <input type="text" id="player1Link" readonly>
+                <button onclick="copyLink('player1Link')" class="btn-copy">Copy</button>
+            </div>
+            
+            <div class="link-box">
+                <h3>Player 2 Link:</h3>
+                <input type="text" id="player2Link" readonly>
+                <button onclick="copyLink('player2Link')" class="btn-copy">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('createRoomBtn').addEventListener('click', async () => {
+            const response = await fetch('/create-room');
+            const data = await response.json();
+            
+            document.getElementById('player1Link').value = data.player1Link;
+            document.getElementById('player2Link').value = data.player2Link;
+            document.getElementById('roomLinks').classList.remove('hidden');
+            document.getElementById('createRoomBtn').style.display = 'none';
+        });
+        
+        function copyLink(inputId) {
+            const input = document.getElementById(inputId);
+            input.select();
+            document.execCommand('copy');
+            alert('Link copied!');
+        }
+    </script>
+</body>
+</html>
