@@ -1,4 +1,7 @@
-const socket = io();
+const socket = io({
+    transports: ['websocket', 'polling']
+});
+
 
 // Get room ID and player ID from URL
 const urlParams = new URLSearchParams(window.location.search);
