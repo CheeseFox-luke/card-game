@@ -51,51 +51,6 @@ body {
     color: #333;
 }
 
-.game-board {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-.player-info {
-    text-align: center;
-    padding: 20px;
-    border-radius: 15px;
-    background: #f8f9fa;
-}
-
-.player-info h2 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.my-player {
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-}
-
-.opponent {
-    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-}
-
-.energy-display {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-.energy-value {
-    color: #667eea;
-    font-size: 2em;
-}
-
-.energy-icon {
-    font-size: 1.5em;
-}
-
 .action-area {
     text-align: center;
     padding: 20px;
@@ -265,7 +220,214 @@ body {
 .rules strong {
     color: #667eea;
 }
+/* ========== 战斗场景样式 ========== */
+.battle-scene {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 15px;
+    margin-bottom: 30px;
+    min-height: 300px;
+    position: relative;
+}
 
+.battle-character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 2;
+}
+
+.character-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.character-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.opponent-character .character-img {
+    transform: scaleX(-1); /* 镜像翻转对手 */
+}
+
+.animation-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.character-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.character-name {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.energy-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #ffd700;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.energy-label {
+    font-size: 1.5em;
+}
+
+/* 中间VS区域 */
+.battle-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.vs-text {
+    font-size: 3em;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.2);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.battle-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4em;
+    pointer-events: none;
+}
+
+/* ========== 动画效果 ========== */
+
+/* 泡泡动画 */
+@keyframes bubbleFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-30px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(1.2);
+    }
+}
+
+.bubble-animation {
+    animation: bubbleFloat 1.5s ease-out;
+    font-size: 3em;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 护盾动画 */
+@keyframes shieldPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+.shield-animation {
+    animation: shieldPop 1s ease-out;
+    font-size: 4em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 针攻击动画 */
+@keyframes needleShoot {
+    0% {
+        opacity: 1;
+        left: 0;
+    }
+    100% {
+        opacity: 0.3;
+        left: 100%;
+    }
+}
+
+@keyframes needleShootReverse {
+    0% {
+        opacity: 1;
+        right: 0;
+    }
+    100% {
+        opacity: 0.3;
+        right: 100%;
+    }
+}
+
+.needle-animation-right {
+    animation: needleShoot 0.8s ease-out;
+    font-size: 2.5em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.needle-animation-left {
+    animation: needleShootReverse 0.8s ease-out;
+    font-size: 2.5em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+/* 受击动画 */
+@keyframes hit {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+.hit-animation {
+    animation: hit 0.3s ease-in-out;
+}
 /* 响应式设计 */
 @media (max-width: 768px) {
     .container {

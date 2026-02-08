@@ -18,49 +18,66 @@
             <div id="gameStatus" class="status">等待玩家加入...</div>
         </div>
 
-        <div class="game-board">
-            <!-- 对手信息 -->
-            <div class="player-info opponent">
-                <h2>对手</h2>
-                <div class="energy-display">
-                    <span class="energy-label">能量:</span>
-                    <span class="energy-value" id="opponentEnergy">0</span>
-                    <span class="energy-icon">⚡</span>
-                </div>
-            </div>
-
-            <!-- 行动选择区域 -->
-            <div class="action-area">
-                <h2>选择你的行动</h2>
-                <div class="action-buttons">
-                    <button id="bubbleBtn" class="action-btn bubble-btn" onclick="chooseAction('bubble')">
-                        <span class="action-icon">🫧</span>
-                        <span class="action-name">泡泡</span>
-                        <span class="action-desc">+1 能量</span>
-                    </button>
-                    <button id="shieldBtn" class="action-btn shield-btn" onclick="chooseAction('shield')">
-                        <span class="action-icon">🛡️</span>
-                        <span class="action-name">护盾</span>
-                        <span class="action-desc">防御攻击</span>
-                    </button>
-                    <button id="attackBtn" class="action-btn attack-btn" onclick="chooseAction('attack')">
-                        <span class="action-icon">📌</span>
-                        <span class="action-name">针</span>
-                        <span class="action-desc">消耗1能量</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 玩家信息 -->
-            <div class="player-info my-player">
-                <h2>你</h2>
-                <div class="energy-display">
-                    <span class="energy-label">能量:</span>
-                    <span class="energy-value" id="myEnergy">0</span>
-                    <span class="energy-icon">⚡</span>
-                </div>
+<!-- 战斗场景 -->
+<div class="battle-scene">
+    <!-- 对手（左边） -->
+    <div class="battle-character opponent-character">
+        <div class="character-container">
+            <img id="opponentCharacter" src="player2.png" alt="对手" class="character-img">
+            <div id="opponentAnimation" class="animation-layer"></div>
+        </div>
+        <div class="character-info">
+            <div class="character-name">对手</div>
+            <div class="energy-bar">
+                <span class="energy-label">⚡</span>
+                <span class="energy-value" id="opponentEnergy">0</span>
             </div>
         </div>
+    </div>
+
+    <!-- 中间VS区域 -->
+    <div class="battle-center">
+        <div class="vs-text">VS</div>
+        <div id="battleAnimation" class="battle-animation"></div>
+    </div>
+
+    <!-- 你（右边） -->
+    <div class="battle-character my-character">
+        <div class="character-container">
+            <img id="myCharacter" src="player2.png" alt="你" class="character-img">
+            <div id="myAnimation" class="animation-layer"></div>
+        </div>
+        <div class="character-info">
+            <div class="character-name">你</div>
+            <div class="energy-bar">
+                <span class="energy-label">⚡</span>
+                <span class="energy-value" id="myEnergy">0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 行动选择区域 -->
+<div class="action-area">
+    <h2>选择你的行动</h2>
+    <div class="action-buttons">
+        <button id="bubbleBtn" class="action-btn bubble-btn" onclick="chooseAction('bubble')">
+            <span class="action-icon">🫧</span>
+            <span class="action-name">泡泡</span>
+            <span class="action-desc">+1 能量</span>
+        </button>
+        <button id="shieldBtn" class="action-btn shield-btn" onclick="chooseAction('shield')">
+            <span class="action-icon">🛡️</span>
+            <span class="action-name">护盾</span>
+            <span class="action-desc">防御攻击</span>
+        </button>
+        <button id="attackBtn" class="action-btn attack-btn" onclick="chooseAction('attack')">
+            <span class="action-icon">📌</span>
+            <span class="action-name">针</span>
+            <span class="action-desc">消耗1能量</span>
+        </button>
+    </div>
+</div>
 
         <!-- 回合结果显示 -->
         <div id="roundResult" class="round-result" style="display: none;">

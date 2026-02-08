@@ -59,19 +59,24 @@ socket.on('round-result', (result) => {
     hasChosen = false;
     opponentHasChosen = false;
     
-    // 显示结算信息
-    displayRoundResult(result);
+    // 播放战斗动画
+    playBattleAnimation(result);
     
-    // 如果游戏结束
-    if (result.gameOver) {
-        displayGameOver(result.winner);
-    } else {
-        // 继续下一回合
-        setTimeout(() => {
-            document.getElementById('gameStatus').textContent = `回合 ${result.round + 1} - 选择你的行动`;
-            updateUI();
-        }, 3000);
-    }
+    // 延迟显示结算信息（等动画播放完）
+    setTimeout(() => {
+        displayRoundResult(result);
+        
+        // 如果游戏结束
+        if (result.gameOver) {
+            displayGameOver(result.winner);
+        } else {
+            // 继续下一回合
+            setTimeout(() => {
+                document.getElementById('gameStatus').textContent = `回合 ${result.round + 1} - 选择你的行动`;
+                updateUI();
+            }, 3000);
+        }
+    }, 1500); // 等待1.5秒动画播放
 });
 
 // 无效行动
@@ -221,4 +226,94 @@ function getActionName(action) {
         'attack': '针 📌'
     };
     return names[action] || action;
+}
+
+// 播放战斗动画
+function playBattleAnimation(result) {
+    const myAction = playerId === '1' ? result.player1Action : result.player2Action;
+    const opponentAction = playerId === '1' ? result.player2Action : result.player1Action;
+    
+    // 播放我的动画
+    playActionAnimation('myAnimation', myAction);
+    
+    // 播放对手的动画
+    playActionAnimation('opponentAnimation', opponentAction);
+    
+    // 如果有针攻击，播放飞行动画
+    if (myAction === 'attack') {
+        playNeedleAnimation('my');
+    }
+    if (opponentAction === 'attack') {
+        playNeedleAnimation('opponent');
+    }
+    
+    // 如果被击中，播放受击动画
+    if (result.gameOver) {
+        if (result.winner.toString() === playerId) {
+            // 对手被击中
+            setTimeout(() => {
+                document.getElementById('opponentCharacter').classList.add('hit-animation');
+                setTimeout(() => {
+                    document.getElementById('opponentCharacter').classList.remove('hit-animation');
+                }, 300);
+            }, 600);
+        } else {
+            // 我被击中
+            setTimeout(() => {
+                document.getElementById('myCharacter').classList.add('hit-animation');
+                setTimeout(() => {
+                    document.getElementById('myCharacter').classList.remove('hit-animation');
+                }, 300);
+            }, 600);
+        }
+    }
+}
+
+// 播放行动动画
+function playActionAnimation(targetId, action) {
+    const animationLayer = document.getElementById(targetId);
+    
+    let emoji = '';
+    let className = '';
+    
+    if (action === 'bubble') {
+        emoji = '🫧';
+        className = 'bubble-animation';
+    } else if (action === 'shield') {
+        emoji = '🛡️';
+        className = 'shield-animation';
+    }
+    
+    if (emoji) {
+        const animDiv = document.createElement('div');
+        animDiv.textContent = emoji;
+        animDiv.className = className;
+        animationLayer.appendChild(animDiv);
+        
+        // 动画结束后移除
+        setTimeout(() => {
+            animDiv.remove();
+        }, 1500);
+    }
+}
+
+// 播放针飞行动画
+function playNeedleAnimation(from) {
+    const battleAnimation = document.getElementById('battleAnimation');
+    
+    const needleDiv = document.createElement('div');
+    needleDiv.textContent = '📌';
+    
+    if (from === 'my') {
+        needleDiv.className = 'needle-animation-right';
+    } else {
+        needleDiv.className = 'needle-animation-left';
+    }
+    
+    battleAnimation.appendChild(needleDiv);
+    
+    // 动画结束后移除
+    setTimeout(() => {
+        needleDiv.remove();
+    }, 800);
 }
